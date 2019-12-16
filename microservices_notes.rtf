@@ -1,0 +1,541 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\froman\fcharset0 Times-Roman;
+\f3\fnil\fcharset0 Menlo-Bold;\f4\fnil\fcharset0 Menlo-BoldItalic;\f5\fnil\fcharset0 Menlo-Italic;
+\f6\fnil\fcharset0 HelveticaNeue-Bold;\f7\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red36\green38\blue41;\red235\green236\blue237;\red0\green0\blue0;
+\red43\green39\blue19;\red0\green0\blue233;\red127\green0\blue85;\red0\green0\blue192;\red100\green100\blue100;
+\red27\green29\blue31;\red63\green95\blue191;\red10\green77\blue204;\red249\green250\blue251;\red70\green77\blue86;
+}
+{\*\expandedcolortbl;;\cssrgb\c18824\c20000\c21176;\cssrgb\c93725\c94118\c94510;\csgray\c0;
+\cssrgb\c22353\c20000\c9412;\cssrgb\c0\c0\c93333;\csgenericrgb\c49804\c0\c33333;\csgenericrgb\c0\c0\c75294;\csgenericrgb\c39216\c39216\c39216;
+\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;\cssrgb\c34510\c37647\c41176;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww38200\viewh24000\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\tx13674\tx13752\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 MICROSERVICE MIGRATION FROM MONOLITHIC APPLICATIONS\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+Check java jdk in Mac:  
+\f1\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+/usr/bin/java -version\
+\
+MONOLITH: rollingstoine-monolithic-ecommerce-shopping-api \
+- Basically this is an old fashioned spring MVC app\
+  with pom elements added incrementally (without spring boot)\
+\
+  Presumably, to run:\
+  \'97> setup MySQL manually as specified in application.properties \
+\
+PAINS:\
+- difficulty of testing\
+  Make change to pricing, testing necessary for entire structure\
+  as it is not decoupled.  \
+- monolith as say 50 apis. If 1 has a memory leak, but it is hard\
+  to identify. Eg:\
+  \'97 Pricing controller issue, load testing issue, kills monolith \
+  - Delivery, Shipping, Products apis rely on Pricing api, so affected\
+  \
+SPRING BOOT 2 revision:\
+\'97> create a new spring boot app with actuator:\
+   
+\fs22 \cf4 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 DraftECommerceApp
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+- new spring boot project: web + actuator\
+==> Actuator gives you default performance metrics:\
+    \'97-> how much memory is left\
+    \'97-> how many threads running\
+==> all spring boot projects have spring-boot-starter-parent\
+    So developer does not have to manually install every small\
+    dependency\
+    Sets up tomcat and mysql instances in this case\
+==> Convention over configuration\
+  \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+==> creating a spring boot app builds to jar (see pom),\
+    and jar contains the embedded tomcat, and potentially embedded db.\
+    Plain spring will include just a war.\
+\
+    Do not have to deploy a war file to a separate container, such as\
+    Tomcat\
+\
+\'97-> mvn clean. (Basically removes deployment / target folder) \
+\'97-> mvn clean package. (Downloads dependencies afresh, so first time longer)\
+                       It also regenerates the created target folder\
+        Note the 2 jars:\
+        -> 
+\fs22 \cf4 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 DraftECommerceApp-0.0.1-SNAPSHOT.jar.original. (just the application)\
+          -> DraftECommerceApp-0.0.1-SNAPSHOT.jar.  (larger file, for running independently)\
+\
+\
+
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1     So in theory, from project folder, run:\
+    -> ./mvnw spring-boot:run\
+       Build and run a runnable jar  \
+       OR\
+    \'97> builds a runnable jar\
+       ./mvnw clean package\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs22 \cf4 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0          java -jar target/DraftECommerceApp-0.0.1-SNAPSHOT.jar
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1  \
+\
+==========================================================\
+\
+SPRING BOOT ACTUATOR\
+- create an application.yml in src/main/resources\
+  and point to a different port, eg. 8091\
+   \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 management:\
+  server: \
+    port: 8091
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+  Note with just the actuator library defined in the pom,\
+  These endpoints can now be accessed:\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul \ulc6     {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator"}}{\fldrslt http://localhost:8091/actuator}}
+\f1\fs26 \cf5 \cb3 \ulnone \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0   \ul endpoints\ulnone :\
+    web:\
+      exposure:\
+        include: "*"\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+eg:\
+- beans ==> output spring beans for application\
+- conditions\
+- config props\
+- env ==> shows timezone and env variables\
+- heap dump ==> dumps a file\
+- metrics\
+- http trace\
+- mappings\
+\
+==========================================================\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs22 \cf4 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 MY SPRING BOOT APP:  DraftECommerceApp
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+EXISTING SPRING MVC: monolithic api\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 rollingstoine-monolithic-ecommerce-shopping-api\
+\
+GROUP (com.micro)\
+pb-ecommerce-product-api\cf5 \
+\
+==========================================================\
+\
+Section 5:\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://www.udemy.com/course/practical-world-java-spring-microservices/learn/lecture/12605520#questions"}}{\fldrslt 
+\f2\fs24 \cf6 \cb1 \ul https://www.udemy.com/course/practical-world-java-spring-microservices/learn/lecture/12605520#questions}}
+\f2\fs24 \cf6 \cb1 \ul \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs26 \cf5 \cb3 \ulnone \
+APPROACH IS TO FOCUS ON ONE AREA< SUCH AS PROCDUCT, AND IMPLEMENT\
+AND TEST THIS SEPARATELY IN ITS OWN SELF-CONTAINED UNIT\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 Created: pb-ecommerce-product-api\cf5 \
+- SPRING BOOT: web, actuator, JPA, MySQL\
+\
+- JPA hides the ORM (in this case hibernate)\
+- web for the rest api\
+\
+- Jackson\
+  Google: jackson databind maven dependency\
+  \'97> take latest\
+  -> just with Jackson, omit the version \
+     (as spring boot already specifies a version)\
+\
+- Swagger\
+  Can add live documentation with little overhead \
+  Google: springfox-swagger2 \
+          Springfox-swagger2-ui \
+\
+\'97> add packages\
+\
+\'97> Migrate from monolith:\
+   - dm.Product\
+\
+\'97> Do not migrate the Dao, because JPA offers better solution\
+   - create ProductDaoRepository from monolith\
+\
+   LOGGING \
+   Note this does not compile\'85\'85.because\
+   - spring boot uses log4j, but better to use sl4j\
+   - jpa=interface hibernate=implementation\
+   ==> slj is totally decoupled from hibernate implementation \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b\fs24 \cf7 \cb1 \kerning1\expnd0\expndtw0 	WAS: final
+\f1\b0 \cf0  
+\f3\b \cf7 static
+\f1\b0 \cf0  Logger 
+\f4\i\b \cf8 logger
+\f1\i0\b0 \cf0  = Logger.\ul getLogger\ulnone (ProductServiceImpl.
+\f3\b \cf7 class
+\f1\b0 \cf0 );\
+
+\f3\b \cf7 	MIGRATE: final
+\f1\b0 \cf0  
+\f3\b \cf7 static
+\f1\b0 \cf0  Logger 
+\f4\i\b \cf8 logger
+\f1\i0\b0 \cf0  = LoggerFactory.\ul getLogger\ulnone (ProductServiceImpl.
+\f3\b \cf7 class
+\f1\b0 \cf0 );
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+    ??? logbook example:\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul            {\field{\*\fldinst{HYPERLINK "https://www.mkyong.com/spring-boot/spring-boot-slf4j-logging-example/"}}{\fldrslt https://www.mkyong.com/spring-boot/spring-boot-slf4j-logging-example/}}
+\f1\fs26 \cf5 \cb3 \ulnone \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5    \
+\'97> rename ProductDao to Repository\
+   Remove Transactional annotations \
+   (Spring boot provides this functionality)\
+\
+\'97> update product ProductService\
+\
+   - standard other changes:\
+     Change ProductService list() to:\
+     - Page<Product> getProductsByPage(Integer pageNum, Integer pageSize);\
+\
+-> update product controller \
+-> test controller crud operations with postman  \
+-> add aspects\
+\
+   Aspects are like triggers, they run before or after an event\'85\
+   Defined when to run by pointcut: @Before([pointcut here..])\
+   This is new in spring boot 2\
+\
+   This is in addition to the actuator means of examining attributes:\
+   
+\f2\fs24 \cf6 \cb1 \ul  {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator"}}{\fldrslt http://localhost:8091/actuator}}
+\f1\fs26 \cf5 \cb3 \ulnone \
+   \
+==========================================================\
+\
+-> add exceptions (for later use)\
+\
+==========================================================\
+Add in event handling and build up actuator\
+\
+-> AbstractController \
+\'97> in ProductContoller use superclass method 
+\f5\i\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 checkResourceFound
+\f1\i0\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+-> add ProductEvent\
+-> add listener for product\
+\'97> removed static and templates directory form resources\
+-> throw some asynchronous events from the controller \
+\'97> application.yml\
+   \'97> configure to expose all endpoints (*)\
+   \'97> add in configuration for health endpoint to show details\
+\'97> test controller in postman\
+\'97> test actuator, especially for health\
+   {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/health"}}{\fldrslt 
+\f2\fs24 \cf6 \cb1 \ul http://localhost:8091/actuator/health}}\
+   Note that disc space is included, and so is MySQL as it is in path\
+   Look at metrics, and call again with the parameter name appended\
+\
+==========================================================\
+==========================================================\
+Service Discovery & Service Discovery (Microservice design pattern)\
+\
+1) Push based spring cloud microservice service discovery\
+   Ie. microservices \'91push\'92 their ip and port to Eureka\
+       Service\
+       (Google is pull based)\
+   Spring cloud is built on the Netflix Eureka service\
+\
+   Problem - if hardcoded service breaks, in monolithic architecture\
+   it crashes\
+\
+   - logical name on Eureka service\
+   - Eureka will use the name to locate one implementation of the \
+     particular service, and there could be multiple containers\
+     running with healthy instances of the application\
+   - heartbeat sent to Eureka every few seconds to determine health\
+\
+Benefits of Service Discovery\
+- decouples clients from the services they call, no hardcoding its \
+- enhance load balancing and availability\
+- service discovery has multiple instances\
+- central hub for orchestration\
+- health information\
+- supports others design patterns for micro services\
+\
+Create new project:\
+pb-ecommerce-eureka-service-discovery\
+- web\
+- Eureka Server\
+- actuator\
+\'97> below @SpringBootApplication, apply 
+\fs24 \cf9 \cb1 \kerning1\expnd0\expndtw0 @EnableEurekaServer 
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+-> delete application.properties + create application.yml + bootstrap.yml\
+\
+   .yml shows properties in a hierarchy\
+   \'97> read early when spring cloud app starts up\
+\
+\
+Deploy: (ignore error in stack trace)\
+\'97> localhost:
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 8761
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+  (shows up on Eureka see application.yml)\
+\'97> actuator health also states UP:\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul         {\field{\*\fldinst{HYPERLINK "http://localhost:8080/actuator"}}{\fldrslt http://localhost:8080/actuator}}
+\f1\fs26 \cf5 \cb3 \ulnone \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+Port already in use:\
+\'97> Find processes on 8080:  \cf10 netstat -vanp tcp | grep 3000\
+\cf5 -> kill it \
+\
+==========================================================\
+\
+   SERVER SIDE\
+-> Make sure service registry micro service is compliant\
+   with the spring cloud latest version (Eureka)\
+\
+   Go to spring cloud website to check Eureka version via: \
+   projects.spring io/spring-cloud\
+\
+   Check with Eureka version and spring boot version in \
+   discovery pom, if maven complains:\
+   - remove current maven repository\
+     rm -R repository/\
+   - maven - update project\
+\
+   So in summary, in discovery app:\
+   mvn clean package\
+   \'97> run discovery app\
+   \'97> check:\
+      localhost:
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 8761
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+   CLIENT SIDE product-api (with the server side running)\
+   Register clients with service discovery app\
+\
+\'97> In product api service app:\
+   Open pom of client service (in this case product-api)\
+   Make sure boot versions match\
+\
+  Google for:\
+  {\field{\*\fldinst{HYPERLINK "https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released"}}{\fldrslt 
+\f2\fs24 \cf6 \cb1 \ul https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released}} \
+\
+  a) Copy dependency management tag into pom of client,\
+  product-api spring boot app: \
+  This is maven\'92s way of inheriting from a 2nd parent\
+\
+  b) Add dependency:\
+     
+\fs24 \cf11 \cb1 \kerning1\expnd0\expndtw0 spring-cloud-starter-netflix-eureka-client
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+\
+  --> create Bootstrap.yml in product-api\
+  \'97-> add service URL of server in client app product-api\
+      to application.yml   (see 
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \ul \ulc0 eureka
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\ulnone )\
+      \
+   Note this is not how to deploy things in production,\
+   Where you will have multiple eureka servers running \
+\
+   \'97> Add 
+\fs24 \cf9 \cb1 \kerning1\expnd0\expndtw0 @EnableDiscoveryClient
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+      to main method of client product-api\
+\
+      mvn clean package of product-api\
+\
+      Now run product-api in a different shell to server\
+      Discovery app\
+\
+      (Note it registers the service in the console,\
+       Check this out in {\field{\*\fldinst{HYPERLINK "http://localhost:8761/"}}{\fldrslt 
+\f2\fs24 \cf6 \cb1 \ul \ulc6 http://localhost:8761/}})\
+\
+==========================================================\
+SPRING CLOUD MICROSERVICES REMOTE CONFIG\
+\
+Microservice Remote Config Service \
+- promotes loose coupling of services\
+(also a microservices design pattern)\
+\
+Avoid hardcoding URLs to a single point of failure eg.\
+When a server goes down containing critical instance\
+\
+Danger of defining these in 1 place, or having to maintain\
+this same info in many different places:\
+- db urls, username + pass\
+- message broker perl username + pass\
+- Internationalization I118N messages\
+\
+\
+- SO: use remote config service with profiles\
+  \'97> decouples microservices from env vars to single point\
+     of truth \
+  -> do not have to change between dev, test and prod\
+\
+NOTE: IN PRODUCTION\
+\
+Microservices layer (product, pricing, delivery etc)\
+\'97-> load balancer\
+    \'97> remote config service cluster (on multiple machines)\
+       \'97> highly available GitHub cluster\
+          \'97> GitHub Highly available storage:\
+             Micorservice-root\
+               Product\
+                 Application-dev.yml\
+                 Application-prod.yml\
+               Payment \
+                 [some other yml files etc]\
+\
+\
+**!!!!\
+For each micro service, transfer the application.yml to\
+a remote GitHub repository\'92s \
+\
+Removed lines transferring from product-api -> mysql.yml:
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 server:\
+  port: 8081\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\
+\
+\'97-> remove git from monolith-micro-remote-config\
+\'97-> save public key from TRT and delete, put into new account\
+\'97-> create repository in the new git: {\field{\*\fldinst{HYPERLINK "https://github.com/TRT-PaulB/monolith-micro-remote-config"}}{\fldrslt 
+\f6\b\fs36 \cf12 \cb13 \ul \ulc12 monolith-micro-remote-config}}
+\f7\fs36 \cf14 \cb13 \
+
+\f1\fs26 \cf5 \cb3 \'97-> init remote with the contents of monolith-micro-remote-config\
+\'97-> update the username, pass and uri\
+    In pb-ecommerce-remote-config-service / application.yml\
+\
+\
+==> upload code to:\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul \ulc6            {\field{\*\fldinst{HYPERLINK "https://github.com/PaulJames4748/pb-monolith-micro-remote-config"}}{\fldrslt https://github.com/PaulJames4748/pb-monolith-micro-remote-config}}\
+
+\f1\fs26 \cf5 \cb3 \ulnone \
+    TEST THE REMOTE CONFIG SERVICE \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 ==> Run the remote config service as a spring boot app\
+\
+==> test product api in browser\
+    Make changes and be sure they are picked up in the browser.\
+    Can the localyml files actually be removed?\
+    localhost:9000/pb-eccommerce-product-api/mysql\
+\
+\
+==> implement further modules\
+    implement the same for:\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \ul \ulc0     pb\ulnone -\ul ecommerce\ulnone -category-\ul api\ulnone , \ul pb\ulnone -\ul ecommerce\ulnone -pricing-\ul api
+\fs26 \cf5 \cb3 \expnd0\expndtw0\kerning0
+\ulnone \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \
+==> test category and pricing\
+\
+==========================================================\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul \ulc6 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs26 \cf5 \cb3 \ulnone COURSE PLAN FROM START CHAPTER 9\
+\
+- revise up to know, including ch8 remote config service test\
+- ch9, 10\
+- 11\
+- 12,13\
+\
+- 14\
+- 15\
+- 16\
+- 17\
+\
+- 18\
+- 19\
+- 20\
+- 21\
+\
+22 - w\
+23, 24, 25\
+26\
+\
+==========================================================\
+\
+\
+\
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf6 \cb1 \ul \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf6 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://github.com/rollingstoneecomm/rollingstone-ecommerce-remote-config-repository"}}{\fldrslt \cf6 \uc0\u8776 }}}
