@@ -1,0 +1,16 @@
+****************** UPDATE
+
+@PutMapping("/group/{id}")
+    ResponseEntity<Group> updateGroup(@Valid @RequestBody Group group) {
+        log.info("Request to update group: {}", group);
+        Group result = groupRepository.save(group);
+        return ResponseEntity.ok().body(result);
+    }
+    
+    @PutMapping("/product/{id}")
+   public ResponseEntity<?> updateProduct(@PathVariable("id") long id, @RequestBody Product product) {
+	  checkResourceFound(this.productService.get(id)); // ie super
+      productService.update(id, product);
+      return ResponseEntity.ok().body("Product has been updated successfully.");
+   }
+   

@@ -1,0 +1,146 @@
+
+
+Note use of profiles in RedirectController
+
+    @PostMapping("/group")
+    ResponseEntity<Group> createGroup(@Valid @RequestBody Group group,
+                                      @AuthenticationPrincipal OAuth2User principal) throws URISyntaxException {
+        log.info("Request to create group: {}", group);
+        Map<String, Object> details = principal.getAttributes();
+        String userId = details.get("sub").toString();
+
+        // check to see if user already exists
+        Optional<User> user = userRepository.findById(userId);
+        group.setUser(user.orElse(new User(userId,
+                details.get("name").toString(), details.get("email").toString())));
+
+        Group result = groupRepository.save(group);
+        return ResponseEntity.created(new URI("/api/group/" + result.getId()))
+                .body(result);
+    }
+//////////////////////////////////////////////////////////////
+JUGTOURS - JavaWorkspace1
+
+
+    @PostMapping("/group")
+    ResponseEntity<Group> createGroup(@Valid @RequestBody Group group,
+                                      @AuthenticationPrincipal OAuth2User principal) throws URISyntaxException {
+        log.info("Request to create group: {}", group);
+        Map<String, Object> details = principal.getAttributes();
+        String userId = details.get("sub").toString();
+ 
+        // check to see if user already exists
+        Optional<User> user = userRepository.findById(userId);
+        group.setUser(user.orElse(new User(userId,
+                        details.get("name").toString(), details.get("email").toString())));
+
+        Group result = groupRepository.save(group);
+        return ResponseEntity.created(new URI("/api/group/" + result.getId()))
+                .body(result);
+    }
+
+    
+
+    
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+WORKSPACE 4
+
+/*---Add new Product---*/
+   @PostMapping("/product")
+   public ResponseEntity<?> createProduct(@RequestBody Product product) {
+      Product savedProduct = productService.save(product);
+      ProductEvent productCreatedEvent = new ProductEvent("One Product is created", savedProduct);
+      eventPublisher.publishEvent(productCreatedEvent);
+      return ResponseEntity.ok().body("New Product has been saved with ID:" + savedProduct.getId());
+   }
+
+//////////////////////////////////////////////////////////////
+
+JavaWorkspace3
+
+BASKET
+	
+	
+	@PostMapping("/add")
+	ResponseEntity<Basket> saveBasket(@Valid @RequestBody Basket basket) throws URISyntaxException {
+	    logger.info("Request to create basket: {}", basket);
+	    basketService.saveBasket(basket);
+	    return ResponseEntity.created(new URI("/route/basket/" + basket.getId()))
+	                .body(basket);
+	}
+
+ORDER
+
+@PostMapping("/member/purchase")
+	ResponseEntity<Order> placeOrder(@RequestBody Order order) throws URISyntaxException {
+		try {
+			Order purchase = orderService.placeOrder(order);
+			logger.info("Request to purchase order: {}", purchase);
+		    return ResponseEntity.created(new URI("/member/purchase/" + purchase.getId()))
+		                .body(purchase);
+		} catch(Throwable t) {
+			Integer basketId = order.getBasket() != null ? order.getBasket().getId() : null; 
+			logger.info("Error placing order for basket: " + basketId + ". Error:\n " + t.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	
+	
+		
+	@PostMapping("/member/pm/add")
+	ResponseEntity<PaymentMethod> postPaymentMethod(@RequestBody PaymentMethod paymentMethod) throws URISyntaxException {
+		logger.info("posting payment method: " + paymentMethod.toString());
+		PaymentMethod result = paymentMethodService.save(paymentMethod);
+		return ResponseEntity.created(new URI("/order/member/pm/add" + result.getId()))
+	            .body(result);
+	}  		
+
+REGISTRATION
+
+@PostMapping("/user/add")
+	public ResponseEntity<User> saveUser(@RequestBody User user) throws URISyntaxException {
+		logger.info("Request to create user: {}", user);
+		User result = registrationService.saveUser(user);
+		return ResponseEntity.created(new URI("/reg/user/add" + result.getId()))
+                .body(result);
+	}
+	
+		
+	
+	
+	
+		
+	@PostMapping("/contact-details/persist")
+	ResponseEntity<ContactDetails> saveContactDetails(@RequestBody ContactDetails contactDetails) throws URISyntaxException {
+		logger.info("posting contact details = " + contactDetails.toString());
+		ContactDetails result = registrationService.saveContactDetails(contactDetails);
+		return ResponseEntity.created(new URI("/reg/user/add" + result.getId()))
+                .body(result);
+	}
+
+ROUTEPLANNER
+
+	
+	@PostMapping("/add")
+	public ResponseEntity<RouteQuery> saveRoute(@RequestBody RouteQuery routeQuery) throws URISyntaxException {
+		logger.info("Request to persist route: {}", routeQuery);
+		RouteQuery result = routePlannerService.saveRoute(routeQuery);
+		return ResponseEntity.created(new URI("/route/add" + result.getId()))
+                .body(result);
+	}	
+
+Ticket
+
+	
+	@PostMapping("/admin/add")
+	ResponseEntity<Ticket> addNewTicket(@RequestBody Ticket ticket) throws URISyntaxException {
+		Ticket result = ticketService.save(ticket);
+		logger.debug("Ticket saved with id: " + result.getId());
+		return ResponseEntity.created(new URI("/ticket/admin/add" + result.getId()))
+                .body(result);
+	}
+
+

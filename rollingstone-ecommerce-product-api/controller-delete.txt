@@ -1,0 +1,22 @@
+****************** DELETE
+
+@DeleteMapping("/group/{id}")
+    public ResponseEntity<?> deleteGroup(@PathVariable Long id) {
+        log.info("Request to delete group: {}", id);
+        groupRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+    
+    @DeleteMapping("/product/{id}")
+   public ResponseEntity<?> deleteProduct(@PathVariable("id") long id) {
+	  checkResourceFound(this.productService.get(id)); // ie super
+      productService.delete(id);
+      return ResponseEntity.ok().body("Product has been deleted successfully.");
+   }
+   
+   	@DeleteMapping("/admin/delete/{id}")
+    public ResponseEntity<?> deleteTicket(@PathVariable Integer id) {
+        logger.info("Request to delete ticket id: {}", id);
+        ticketService.delete(id);
+        return ResponseEntity.ok().build();
+    }
