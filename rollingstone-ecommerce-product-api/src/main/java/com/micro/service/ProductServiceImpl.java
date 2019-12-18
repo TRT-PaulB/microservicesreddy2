@@ -1,4 +1,4 @@
-package com.micro.spring.service;
+package com.micro.service;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.micro.spring.dao.ProductDaoRepository;
-import com.micro.spring.dm.Product;
+import com.micro.dao.ProductDaoRepository;
+import com.micro.dm.Product;
 
 
 @Service

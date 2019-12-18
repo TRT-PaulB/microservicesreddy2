@@ -10,7 +10,7 @@
 \cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\csgenericrgb\c49804\c0\c33333;
 \csgenericrgb\c0\c0\c75294;\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;
 \cssrgb\c34510\c37647\c41176;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww38200\viewh22580\viewkind0
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh20960\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
 \f0\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
@@ -239,6 +239,26 @@ Migration based on fact that monolith was working - reuse code:\
                Use findById\
   - change list() to paging method, see method in ProductService\
      \
+- Controller class\
+  \'97> copy ProductController\
+  -> in get all method\
+     \'97> replace return value: 
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 ResponseEntity<List<Product>>
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+     \'97> use @ResponseBody to send data back to client \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2      \'97> use @RequestParam to take paging values\
+     \'97> just return 
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 Page<Product>, and spring will take \
+         take of JSON conversion
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+  -> set application properties for embedded tomcat,\
+     MySQL database and hibernate\
+\
+==> test the Microservice for product api:\
+    \'97> Run As ->L Spring Boot App   \
 \
 \
 ==========================================================\
@@ -527,7 +547,8 @@ Removed lines transferring from product-api -> mysql.yml:
 ==> upload code to:\
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul \ulc5            {\field{\*\fldinst{HYPERLINK "https://github.com/PaulJames4748/pb-monolith-micro-remote-config"}}{\fldrslt \cf5 \ulc5 https://github.com/PaulJames4748/pb-monolith-micro-remote-config}}\
+\f2\fs24 \cf5 \cb1 \ul \ulc5            {\field{\*\fldinst{HYPERLINK "https://github.com/PaulJames4748/pb-monolith-micro-remote-config"}}{\fldrslt https://github.com/PaulJames4748/pb-monolith-micro-remote-config}}\
+\pard\pardeftab720\sl280\partightenfactor0
 
 \f0\fs26 \cf2 \cb3 \ulnone \
     TEST THE REMOTE CONFIG SERVICE \
@@ -588,9 +609,9 @@ Removed lines transferring from product-api -> mysql.yml:
 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul \ulc5 \
+\f2\fs24 \cf5 \cb1 \ul \
 \pard\pardeftab720\sl280\partightenfactor0
-\cf5 \ulc5 \
+\cf5 \
 \
 \
 \
@@ -602,4 +623,4 @@ Removed lines transferring from product-api -> mysql.yml:
 \
 \
 \pard\pardeftab720\sl280\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://github.com/rollingstoneecomm/rollingstone-ecommerce-remote-config-repository"}}{\fldrslt \cf5 \ulc5 \uc0\u8776 }}}
+{\field{\*\fldinst{HYPERLINK "https://github.com/rollingstoneecomm/rollingstone-ecommerce-remote-config-repository"}}{\fldrslt \cf5 \uc0\u8776 }}}

@@ -1,4 +1,4 @@
-package com.micro.spring.dm;
+package com.micro.dm;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

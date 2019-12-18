@@ -1,16 +1,20 @@
-package com.micro.spring.dao;
+package com.micro.dao;
 
-import java.util.List;
-
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-import com.micro.spring.dm.Product;
+import com.micro.dm.Product;
 
-public interface ProductDaoRepository<Product> extends PagingAndSortingRepository {
+@Repository
+public interface ProductDaoRepository extends PagingAndSortingRepository<Product, Long> {
 
-	List<Product> findAll();
-	
+//	Page<Product> findAll(Pageable pageable);
 }
+
+
+
 
 
 

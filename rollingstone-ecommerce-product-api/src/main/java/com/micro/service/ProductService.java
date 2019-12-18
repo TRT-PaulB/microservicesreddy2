@@ -1,7 +1,9 @@
-package com.micro.spring.service;
+package com.micro.service;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
-import com.micro.spring.dm.Product;
+
+import com.micro.dm.Product;
 
 public interface ProductService {
 
