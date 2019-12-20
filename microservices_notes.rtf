@@ -10,7 +10,7 @@
 \cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\csgenericrgb\c49804\c0\c33333;
 \csgenericrgb\c0\c0\c75294;\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;
 \cssrgb\c34510\c37647\c41176;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh20960\viewkind0
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh15520\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
 \f0\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
@@ -247,8 +247,7 @@ Migration based on fact that monolith was working - reuse code:\
 \fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
 \
      \'97> use @ResponseBody to send data back to client \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2      \'97> use @RequestParam to take paging values\
+     \'97> use @RequestParam to take paging values\
      \'97> just return 
 \fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 Page<Product>, and spring will take \
          take of JSON conversion
@@ -260,12 +259,33 @@ Migration based on fact that monolith was working - reuse code:\
 ==> test the Microservice for product api:\
     \'97> Run this migrated Microservice!   \
     \'97> see postman.txt\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 \
+\
 ==> create aspects package and class\
     \'97> notice pointcuts defined\
     \'97> parallel to triggers in Oracle DB\
     -> keeps aspects in same package\
+\
+==> add in exceptions\
+\
+==> event handling for the product system area:\
+    \'97> create productEvent\
+    -> add productEventListener\
+    \'97> add in AbstractController\
+    \'97> update ProductController (exceptions and events):\
+       \'97> handle exceptions already thrown\
+       -> explicitly throw check resource found exceptions as required\
+       -> listen for events\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 ==> static and templates folder are unnecessary, so remove them\
+    From resources \
+\
+==> create application.yml for configuring the Actuator\
+    \'97> actuator port\
+    \'97> expose all endpoints\
+    \'97> health endpoint details\
+\
+START FROM ch 5 no 50\
 \
 ==========================================================\
 \
@@ -273,8 +293,7 @@ Migration based on fact that monolith was working - reuse code:\
 \
 \
 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 ==========================================================\
+==========================================================\
 \
 ==========================================================\
 \

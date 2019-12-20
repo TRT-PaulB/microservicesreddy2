@@ -23,7 +23,7 @@ public class RestControllerAspect {
 	// .. = any argument
 	@Before("execution(public * com.micro.ctrl.*Controller.*(..))")
 	public void generalAllMethodAspect() {
-		logger.info("All Method Calls to controllers invoke this general aspect method");
+		logger.info("All Method Calls to controllers invoke this general aspect method first");
 	}
 	
 	// called after any controller save() method is invoked
