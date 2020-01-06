@@ -325,31 +325,62 @@ product does not have an increased id\
 \
 ==========================================================\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf4 SECTION 6 - Spring Cloud Microservices Service Discovery\cf2 \
+\cf4 SECTION 6 - Spring Cloud Microservices Service Discovery\cf2  \
+            (Microservice design pattern)\
+\
+\'97-> A way to decouple services\
+\
+Conceptually like looking up services on google such as eateries,\
+Garages, supermarkets, with google selecting relevant \
+(eg by location) and rating - so a thin client not a big \
+yellow pages. Advantages:\
+\'97> if data changes, no need to reprint and distribute the yellow\
+   pages!\
+\
+All services instantiated and running inside a container maybe\'85..\
+And once they start up THEY SEND their location information to\
+a service registry (we will use spring cloud)\
+eg. \
+- Product content\
+- Pricing\
+- shipping\
+- Add to Cart\
+- Checkout\
+ \
+\'97> problem is that if clients specify exactly the backend service,\
+   port and url / ipaddresses of the servers they want to use, \
+   then if a service instance goes down, the the client breaks\
+\
+\'97> so made loosely coupled by clients querying Eureka service with\
+   a logical name (see bootstrap.yml)\
+   The service you want to call has itself registered the logical\
+   name of Eureka\
+\
+\'97> so for example suppose there are 5 Product services registered\
+   against the same logical name, but services will all be running\
+   on different ip addresses\
+\
+\'97> google PULLS information from website \'97> PULL BASED\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \'97> the services actively PUSH their data to a service \
+   registry \'97> spring cloud microservices are PUSH BASED\
+\
+\'97> so the Eureka registry holds a list of URLs against a single \
+   logical name\
+\
+\'97> every few seconds, each of the registered micro services need to\
+   send their health information to Eureka (ie regular heartbeats)\
+\
+ADVANTAGES OF SERVICE DISCOVERY\
+\'97> decouples services from clients \
+   -> (no hardcoding IP address in client)\
+   -> more resilient if a service goes down\
+\'97> advanced load balancing and high availability, and a central hub\
+   for orchestration + supplies health information\
+   ==> NOTE: it is critical that each of the Eureka instances\
+             Know about all the others\
 \
 \
-\
-\
-\
-\
-==========================================================\
-==========================================================\
-Service Discovery & Service Discovery (Microservice design pattern)\
-\
-1) Push based spring cloud microservice service discovery\
-   Ie. microservices \'91push\'92 their ip and port to Eureka\
-       Service\
-       (Google is pull based)\
-   Spring cloud is built on the Netflix Eureka service\
-\
-   Problem - if hardcoded service breaks, in monolithic architecture\
-   it crashes\
-\
-   - logical name on Eureka service\
-   - Eureka will use the name to locate one implementation of the \
-     particular service, and there could be multiple containers\
-     running with healthy instances of the application\
-   - heartbeat sent to Eureka every few seconds to determine health\
 \
 Benefits of Service Discovery\
 - decouples clients from the services they call, no hardcoding its \
