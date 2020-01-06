@@ -27,7 +27,7 @@ public class ProductController extends AbstractController {
 
    /*---Add new Product---*/
    @PostMapping("/product")
-   public ResponseEntity<?> createProduct(@RequestBody Product product) {
+   public ResponseEntity<?> save(@RequestBody Product product) {
       Product savedProduct = productService.save(product);
       
       ProductEvent prdCreatedEvent = new ProductEvent("Product is created", savedProduct);

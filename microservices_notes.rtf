@@ -1,15 +1,14 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
 {\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;\f2\froman\fcharset0 Times-Roman;
-\f3\fnil\fcharset0 Menlo-Bold;\f4\fnil\fcharset0 Menlo-BoldItalic;\f5\fnil\fcharset0 Menlo-Italic;
-\f6\fnil\fcharset0 HelveticaNeue-Bold;\f7\fnil\fcharset0 HelveticaNeue;}
+\f3\fnil\fcharset0 HelveticaNeue-Bold;\f4\fnil\fcharset0 HelveticaNeue;}
 {\colortbl;\red255\green255\blue255;\red43\green39\blue19;\red235\green236\blue237;\red36\green38\blue41;
-\red0\green0\blue233;\red0\green0\blue0;\red100\green100\blue100;\red42\green0\blue255;\red127\green0\blue85;
-\red0\green0\blue192;\red27\green29\blue31;\red63\green95\blue191;\red10\green77\blue204;\red249\green250\blue251;
-\red70\green77\blue86;}
+\red0\green0\blue233;\red0\green0\blue0;\red100\green100\blue100;\red42\green0\blue255;\red0\green0\blue233;
+\red27\green29\blue31;\red63\green95\blue191;\red10\green77\blue204;\red249\green250\blue251;\red70\green77\blue86;
+}
 {\*\expandedcolortbl;;\cssrgb\c22353\c20000\c9412;\cssrgb\c93725\c94118\c94510;\cssrgb\c18824\c20000\c21176;
-\cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\csgenericrgb\c49804\c0\c33333;
-\csgenericrgb\c0\c0\c75294;\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;
-\cssrgb\c34510\c37647\c41176;}
+\cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\cssrgb\c0\c0\c93333;
+\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;\cssrgb\c34510\c37647\c41176;
+}
 \paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh15520\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
@@ -273,11 +272,11 @@ Migration based on fact that monolith was working - reuse code:\
     \'97> add in AbstractController\
     \'97> update ProductController (exceptions and events):\
        \'97> handle exceptions already thrown\
-       -> explicitly throw check resource found exceptions as required\
+       -> explicitly throw check resource found exceptions \
+          as required\
        -> listen for events\
 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 ==> static and templates folder are unnecessary, so remove them\
+==> static and templates folder are unnecessary, so remove them\
     From resources \
 \
 ==> create application.yml for configuring the Actuator\
@@ -285,104 +284,53 @@ Migration based on fact that monolith was working - reuse code:\
     \'97> expose all endpoints\
     \'97> health endpoint details\
 \
-START FROM ch 5 no 50\
-\
-==========================================================\
-\
-\
-\
-\
-\
-==========================================================\
-\
-==========================================================\
-\
-\
-\
-   LOGGING \
-   Note this does not compile\'85\'85.because\
-   - spring boot uses log4j, but better to use sl4j\
-   - jpa=interface hibernate=implementation\
-   ==> slj is totally decoupled from hibernate implementation \
-\
+=> update application.yml to show endpoints:\
 \pard\pardeftab720\partightenfactor0
 
-\f3\b\fs24 \cf9 \cb1 \kerning1\expnd0\expndtw0 	WAS: final
-\f0\b0 \cf0  
-\f3\b \cf9 static
-\f0\b0 \cf0  Logger 
-\f4\i\b \cf10 logger
-\f0\i0\b0 \cf0  = Logger.\ul getLogger\ulnone (ProductServiceImpl.
-\f3\b \cf9 class
-\f0\b0 \cf0 );\
-
-\f3\b \cf9 	MIGRATE: final
-\f0\b0 \cf0  
-\f3\b \cf9 static
-\f0\b0 \cf0  Logger 
-\f4\i\b \cf10 logger
-\f0\i0\b0 \cf0  = LoggerFactory.\ul getLogger\ulnone (ProductServiceImpl.
-\f3\b \cf9 class
-\f0\b0 \cf0 );
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 management:\
+  server:\
+    port: 8091\
+  \ul endpoints\ulnone :\
+    web:\
+      exposure:\
+        include: "*"\
+  \ul endpoint\ulnone :\
+    health:\
+      show-details: "always"
 \fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf2 \
-    ??? logbook example:\
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul            {\field{\*\fldinst{HYPERLINK "https://www.mkyong.com/spring-boot/spring-boot-slf4j-logging-example/"}}{\fldrslt https://www.mkyong.com/spring-boot/spring-boot-slf4j-logging-example/}}
-\f0\fs26 \cf2 \cb3 \ulnone \
+\f2\fs24 \cf9 \cb1 \ul \ulc9 \outl0\strokewidth0 \strokec9 	{\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/health"}}{\fldrslt http://localhost:8091/actuator/health}}
+\f0\fs26 \cf2 \cb3 \ulnone \outl0\strokewidth0 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2    \
-\'97> rename ProductDao to Repository\
-   Remove Transactional annotations \
-   (Spring boot provides this functionality)\
+\cf2 \
+- No1 for actuator server and port\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 - No2 makes spring boot expose all the endpoints\
+- No3 needed for more details on health endpoint\
 \
-\'97> update product ProductService\
+- Health of MySQL included if it is on your path!\
+- Metrics:   \
+  {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/metrics"}}{\fldrslt 
+\f2\fs24 \cf9 \cb1 \ul \ulc9 \outl0\strokewidth0 \strokec9 http://localhost:8091/actuator/metrics}} + metric\
 \
-   - standard other changes:\
-     Change ProductService list() to:\
-     - Page<Product> getProductsByPage(Integer pageNum, Integer pageSize);\
-\
--> update product controller \
--> test controller crud operations with postman  \
--> add aspects\
-\
-   Aspects are like triggers, they run before or after an event\'85\
-   Defined when to run by pointcut: @Before([pointcut here..])\
-   This is new in spring boot 2\
-\
-   This is in addition to the actuator means of examining attributes:\
-   
-\f2\fs24 \cf5 \cb1 \ul  {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator"}}{\fldrslt http://localhost:8091/actuator}}
-\f0\fs26 \cf2 \cb3 \ulnone \
-   \
-==========================================================\
-\
--> add exceptions (for later use)\
+Note that when updating the product, it increments the id which \
+cannot be right.\
+Seems the id needs to be in both the url as a variable AND the \
+body of the full product object to be changed - then the updated \
+product does not have an increased id\
 \
 ==========================================================\
-Add in event handling and build up actuator\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf4 SECTION 6 - Spring Cloud Microservices Service Discovery\cf2 \
 \
--> AbstractController \
-\'97> in ProductContoller use superclass method 
-\f5\i\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 checkResourceFound
-\f0\i0\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
 \
--> add ProductEvent\
--> add listener for product\
-\'97> removed static and templates directory form resources\
--> throw some asynchronous events from the controller \
-\'97> application.yml\
-   \'97> configure to expose all endpoints (*)\
-   \'97> add in configuration for health endpoint to show details\
-\'97> test controller in postman\
-\'97> test actuator, especially for health\
-   {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/health"}}{\fldrslt 
-\f2\fs24 \cf5 \cb1 \ul http://localhost:8091/actuator/health}}\
-   Note that disc space is included, and so is MySQL as it is in path\
-   Look at metrics, and call again with the parameter name appended\
+\
+\
+\
 \
 ==========================================================\
 ==========================================================\
@@ -439,7 +387,7 @@ Deploy: (ignore error in stack trace)\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf2 \
 Port already in use:\
-\'97> Find processes on 8080:  \cf11 netstat -vanp tcp | grep 3000\
+\'97> Find processes on 8080:  \cf10 netstat -vanp tcp | grep 3000\
 \cf2 -> kill it \
 \
 ==========================================================\
@@ -485,7 +433,7 @@ Port already in use:\
 \
   b) Add dependency:\
      
-\fs24 \cf12 \cb1 \kerning1\expnd0\expndtw0 spring-cloud-starter-netflix-eureka-client
+\fs24 \cf11 \cb1 \kerning1\expnd0\expndtw0 spring-cloud-starter-netflix-eureka-client
 \fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
 \
 \
@@ -569,8 +517,8 @@ Removed lines transferring from product-api -> mysql.yml:
 \'97-> remove git from monolith-micro-remote-config\
 \'97-> save public key from TRT and delete, put into new account\
 \'97-> create repository in the new git: {\field{\*\fldinst{HYPERLINK "https://github.com/TRT-PaulB/monolith-micro-remote-config"}}{\fldrslt 
-\f6\b\fs36 \cf13 \cb14 \ul \ulc13 monolith-micro-remote-config}}
-\f7\fs36 \cf15 \cb14 \
+\f3\b\fs36 \cf12 \cb13 \ul \ulc12 monolith-micro-remote-config}}
+\f4\fs36 \cf14 \cb13 \
 
 \f0\fs26 \cf2 \cb3 \'97-> init remote with the contents of monolith-micro-remote-config\
 \'97-> update the username, pass and uri\
