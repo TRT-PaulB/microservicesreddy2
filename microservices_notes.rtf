@@ -1,13 +1,16 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
 {\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;\f2\froman\fcharset0 Times-Roman;
-\f3\fnil\fcharset0 HelveticaNeue-Bold;\f4\fnil\fcharset0 HelveticaNeue;}
+\f3\fnil\fcharset0 Menlo-Bold;\f4\fnil\fcharset0 HelveticaNeue-Bold;\f5\fnil\fcharset0 HelveticaNeue;
+}
 {\colortbl;\red255\green255\blue255;\red43\green39\blue19;\red235\green236\blue237;\red36\green38\blue41;
-\red0\green0\blue233;\red0\green0\blue0;\red100\green100\blue100;\red42\green0\blue255;\red0\green0\blue233;
-\red27\green29\blue31;\red63\green95\blue191;\red10\green77\blue204;\red249\green250\blue251;\red70\green77\blue86;
+\red0\green0\blue233;\red0\green0\blue0;\red100\green100\blue100;\red42\green0\blue255;\red0\green104\blue218;
+\red0\green0\blue233;\red0\green128\blue128;\red63\green127\blue127;\red34\green79\blue188;\red27\green29\blue31;
+\red38\green38\blue38;\red255\green255\blue255;\red10\green77\blue204;\red249\green250\blue251;\red70\green77\blue86;
 }
 {\*\expandedcolortbl;;\cssrgb\c22353\c20000\c9412;\cssrgb\c93725\c94118\c94510;\cssrgb\c18824\c20000\c21176;
-\cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\cssrgb\c0\c0\c93333;
-\cssrgb\c14118\c15294\c16078;\csgenericrgb\c24706\c37255\c74902;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;\cssrgb\c34510\c37647\c41176;
+\cssrgb\c0\c0\c93333;\csgray\c0;\csgenericrgb\c39216\c39216\c39216;\csgenericrgb\c16471\c0\c100000;\csgenericrgb\c0\c40784\c85490;
+\cssrgb\c0\c0\c93333;\csgenericrgb\c0\c50196\c50196;\csgenericrgb\c24706\c49804\c49804;\csgenericrgb\c13206\c30848\c73913;\cssrgb\c14118\c15294\c16078;
+\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;\cssrgb\c1176\c40000\c83922;\cssrgb\c98039\c98431\c98824;\cssrgb\c34510\c37647\c41176;
 }
 \paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh15520\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
@@ -303,19 +306,18 @@ Migration based on fact that monolith was working - reuse code:\
 \cf2 \
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f2\fs24 \cf9 \cb1 \ul \ulc9 \outl0\strokewidth0 \strokec9 	{\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/health"}}{\fldrslt http://localhost:8091/actuator/health}}
-\f0\fs26 \cf2 \cb3 \ulnone \outl0\strokewidth0 \
+\f2\fs24 \cf5 \cb1 \ul \ulc5 	{\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/health"}}{\fldrslt http://localhost:8091/actuator/health}}
+\f0\fs26 \cf2 \cb3 \ulnone \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf2 \
 - No1 for actuator server and port\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 - No2 makes spring boot expose all the endpoints\
+- No2 makes spring boot expose all the endpoints\
 - No3 needed for more details on health endpoint\
 \
 - Health of MySQL included if it is on your path!\
 - Metrics:   \
   {\field{\*\fldinst{HYPERLINK "http://localhost:8091/actuator/metrics"}}{\fldrslt 
-\f2\fs24 \cf9 \cb1 \ul \ulc9 \outl0\strokewidth0 \strokec9 http://localhost:8091/actuator/metrics}} + metric\
+\f2\fs24 \cf5 \cb1 \ul http://localhost:8091/actuator/metrics}} + metric\
 \
 Note that when updating the product, it increments the id which \
 cannot be right.\
@@ -326,7 +328,7 @@ product does not have an increased id\
 ==========================================================\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf4 SECTION 6 - Spring Cloud Microservices Service Discovery\cf2  \
-            (Microservice design pattern)\
+            (Microservice \'91Discovery\'92 design pattern)\
 \
 \'97-> A way to decouple services\
 \
@@ -361,8 +363,7 @@ eg. \
    on different ip addresses\
 \
 \'97> google PULLS information from website \'97> PULL BASED\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 \'97> the services actively PUSH their data to a service \
+\'97> the services actively PUSH their data to a service \
    registry \'97> spring cloud microservices are PUSH BASED\
 \
 \'97> so the Eureka registry holds a list of URLs against a single \
@@ -371,40 +372,161 @@ eg. \
 \'97> every few seconds, each of the registered micro services need to\
    send their health information to Eureka (ie regular heartbeats)\
 \
-ADVANTAGES OF SERVICE DISCOVERY\
+   ADVANTAGES OF SERVICE DISCOVERY\
+\
 \'97> decouples services from clients \
    -> (no hardcoding IP address in client)\
    -> more resilient if a service goes down\
 \'97> advanced load balancing and high availability, and a central hub\
    for orchestration + supplies health information\
-   ==> NOTE: it is critical that each of the Eureka instances\
-             Know about all the others\
+   ==> NOTE: it is critical that each of the Eureka instances to\
+             know about all the others\
 \
+   CREATE A DISCOVERY SERVICE\
 \
+Create new project using spring initialiser:\
+\'97> rollingstone-ecommerce-eureka-service-discovery\
+\'97> dependencies:  Eureka Server, Actuator \
+                  (Eureka Discovery not required as this is for clients\
+             \
 \
-Benefits of Service Discovery\
-- decouples clients from the services they call, no hardcoding its \
-- enhance load balancing and availability\
-- service discovery has multiple instances\
-- central hub for orchestration\
-- health information\
-- supports others design patterns for micro services\
-\
-Create new project:\
-pb-ecommerce-eureka-service-discovery\
-- web\
-- Eureka Server\
-- actuator\
-\'97> below @SpringBootApplication, apply 
-\fs24 \cf7 \cb1 \kerning1\expnd0\expndtw0 @EnableEurekaServer 
+\'97> apply to main method: @SpringBootApplication 
+\fs24 \cf7 \cb1 \kerning1\expnd0\expndtw0 @EnableEurekaServer
 \fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
 \
--> delete application.properties + create application.yml + bootstrap.yml\
+-> delete the empty application.properties \
+          + create application.yml + bootstrap.yml\
 \
    .yml shows properties in a hierarchy\
-   \'97> read early when spring cloud app starts up\
+   \'97> bootstrap.yml is read early when spring cloud app starts up\
 \
+   -> bootstrap: put in application name\
+   -> application:\
+      \'97-> hostname\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2       \'97-> dynamic URL\
 \
+Just for the sake of running the service discovery app, set\
+registerWithEureka & fetchRegistry to false, as there is as yet\
+no other service to communicate with\
+\
+Run discovery service:\
+Note that this is a known error (expected!)\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf9 \cb1 \kerning1\expnd0\expndtw0 \ul \ulc9 java.net.URISyntaxException\cf0 \ulnone : Illegal character in authority at \
+index 7: http://localhost:$\{server.port\}/eureka/
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+Set the port in the registration service properties, and then\
+view Eureka:\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://localhost:8761/"}}{\fldrslt 
+\f2\fs24 \cf10 \cb1 \ul \ulc10 \outl0\strokewidth0 \strokec10 http://localhost:8761/}}\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+-\'97> this details every micro service that has registered with Eureka\
+-\'97> applications display their logical names as defined in the\
+    bootstrap.yml file\
+\
+==========================================================\
+SECTION 7: Client Service Registration\
+\
+Register the product api micro service with the (client)\
+service registry app created in section 6.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+Server side checklist:\
+- create the a service registry server with Eureka and check \
+  it is compliant with latest version of Spring Cloud (ch 6)\
+\
+  Go to: projects.spring.io/spring-cloud/\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\fs24 \cf10 \cb1 \ul \ulc10 \outl0\strokewidth0 \strokec10                         {\field{\*\fldinst{HYPERLINK "https://spring.io/projects/spring-cloud"}}{\fldrslt https://spring.io/projects/spring-cloud}}
+\f0\fs26 \cf2 \cb3 \ulnone \outl0\strokewidth0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2      Get the spring boot used by the cloud\'85. \
+\
+  And check that this matches wit the spring boot\
+  starter parent spring boot version in pom of server registry \
+  app (or change it to match):\
+   
+\fs24 \cf11 \cb1 \kerning1\expnd0\expndtw0 <\cf12 parent\cf11 >\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf0 		\cf11 <\cf12 groupId\cf11 >\cf0 org.springframework.boot\cf11 </\cf12 groupId\cf11 >\cf0 \
+		\cf11 <\cf12 artifactId\cf11 >\cf0 spring-boot-starter-parent\cf11 </\cf12 artifactId\cf11 >\cf0 \
+		\cf11 <\cf12 version\cf11 >\cf0 2.2.2.RELEASE\cf11 </\cf12 version\cf11 >\cf0 \
+		\cf11 <\cf12 relativePath\cf11 />\cf0  \
+    \cf11 </\cf12 parent\cf11 >\
+\
+    Then refresh the maven repository:\
+    Go into .m2 directory in the terminal\
+    rm -R repository/\
+    \
+    The go to registration service:\
+       \'97> MAVEN: update project
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+- Build registry micro service (mvn clean package) to create \
+  a jar for the app (do from registration app package)\
+- Run the registry app with command:\
+  java -jar target/[created_jar].jar\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2   java -jar target/
+\fs22 \cf1 \cb13 \kerning1\expnd0\expndtw0 \CocoaLigature0 rollingstone-ecommerce-eureka-service-discovery-0.0.1-SNAPSHOT.jar
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+- visit the registry site to verify registration:\
+  {\field{\*\fldinst{HYPERLINK "http://localhost:8761/"}}{\fldrslt 
+\f2\fs24 \cf5 \cb1 \ul \ulc5 http://localhost:8761/}}\
+\
+Client side checklist - product-api (with the server side running)\
+- Open the pom of the client (ie product api)\
+- Get the latest version from the spring cloud site\
+  {\field{\*\fldinst{HYPERLINK "https://spring.io/projects/spring-cloud"}}{\fldrslt 
+\f2\fs24 \cf10 \cb1 \ul \ulc10 \outl0\strokewidth0 \strokec10 https://spring.io/projects/spring-cloud}} \
+- include spring cloud maven dependency, because it is only possible\
+  to to inherit from 1 parent in spring boot.\
+  \'97> use 
+\fs24 \cf12 \cb1 \kerning1\expnd0\expndtw0 dependencyManagement element. (See spring cloud website)\
+      {\field{\*\fldinst{HYPERLINK "https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released"}}{\fldrslt 
+\f2 \cf5 \expnd0\expndtw0\kerning0
+\ul \ulc5 https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released}}
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+ \
+- now add a dependency for:\
+  
+\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 spring-cloud-starter-netflix-eureka-client
+\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+- add bootstrap.yml and specify the name of this product api client micro service\
+- register this product service client with the registration server\
+  in applications.yml file: \
+  eureka:client:serviceUrl:defaultZone: http://localhost:8761/eureka\
+- @EnableDiscoveryClient on main application\
+- mvn clean package of product api\
+- Now run product-api in a different shell to server\
+  Discovery app\
+  (Note it registers the service in the console,\
+   Check this out in the registration Eureka server: {\field{\*\fldinst{HYPERLINK "http://localhost:8761/"}}{\fldrslt 
+\f2\fs24 \cf5 \cb1 \ul \ulc5 http://localhost:8761/}}\
+   \'97> java -jar target/[created_jar].jar\
+   => So this is service registry from he client side\'85.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 ==========================================================\
+==========================================================\
+==========================================================\
+==========================================================\
+==========================================================\
+==========================================================\
+==========================================================\
 Deploy: (ignore error in stack trace)\
 \'97> localhost:
 \fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 8761
@@ -413,85 +535,22 @@ Deploy: (ignore error in stack trace)\
 \'97> actuator health also states UP:\
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul         {\field{\*\fldinst{HYPERLINK "http://localhost:8080/actuator"}}{\fldrslt http://localhost:8080/actuator}}
+\f2\fs24 \cf5 \cb1 \ul         {\field{\*\fldinst{HYPERLINK "http://localhost:8080/actuator"}}{\fldrslt \cf5 http://localhost:8080/actuator}}
 \f0\fs26 \cf2 \cb3 \ulnone \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf2 \
 Port already in use:\
-\'97> Find processes on 8080:  \cf10 netstat -vanp tcp | grep 3000\
+\'97> Find processes on 8080:  \cf14 netstat -vanp tcp | grep 3000\
 \cf2 -> kill it \
 \
+\pard\pardeftab720\sl360\partightenfactor0
+\cf15 \cb16 \outl0\strokewidth0 \strokec15 lsof -i :
+\f3\b port.  (All process names with id on Unix)
+\f0\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \cb3 \outl0\strokewidth0 \
 ==========================================================\
 \
-   SERVER SIDE\
--> Make sure service registry micro service is compliant\
-   with the spring cloud latest version (Eureka)\
-\
-   Go to spring cloud website to check Eureka version via: \
-   projects.spring io/spring-cloud\
-\
-   Check with Eureka version and spring boot version in \
-   discovery pom, if maven complains:\
-   - remove current maven repository\
-     rm -R repository/\
-   - maven - update project\
-\
-   So in summary, in discovery app:\
-   mvn clean package\
-   \'97> run discovery app\
-   \'97> check:\
-      localhost:
-\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 8761
-\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\
-\
-\'97\'97\'97\'97\'97\'97\'97\'97\
-\
-   CLIENT SIDE product-api (with the server side running)\
-   Register clients with service discovery app\
-\
-\'97> In product api service app:\
-   Open pom of client service (in this case product-api)\
-   Make sure boot versions match\
-\
-  Google for:\
-  {\field{\*\fldinst{HYPERLINK "https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released"}}{\fldrslt 
-\f2\fs24 \cf5 \cb1 \ul https://spring.io/blog/2019/09/12/spring-cloud-greenwich-sr3-released}} \
-\
-  a) Copy dependency management tag into pom of client,\
-  product-api spring boot app: \
-  This is maven\'92s way of inheriting from a 2nd parent\
-\
-  b) Add dependency:\
-     
-\fs24 \cf11 \cb1 \kerning1\expnd0\expndtw0 spring-cloud-starter-netflix-eureka-client
-\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\
-\
-  --> create Bootstrap.yml in product-api\
-  \'97-> add service URL of server in client app product-api\
-      to application.yml   (see 
-\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \ul eureka
-\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\ulnone )\
-      \
-   Note this is not how to deploy things in production,\
-   Where you will have multiple eureka servers running \
-\
-   \'97> Add 
-\fs24 \cf7 \cb1 \kerning1\expnd0\expndtw0 @EnableDiscoveryClient
-\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\
-      to main method of client product-api\
-\
-      mvn clean package of product-api\
-\
-      Now run product-api in a different shell to server\
-      Discovery app\
-\
-      (Note it registers the service in the console,\
-       Check this out in {\field{\*\fldinst{HYPERLINK "http://localhost:8761/"}}{\fldrslt 
-\f2\fs24 \cf5 \cb1 \ul \ulc5 http://localhost:8761/}})\
 \
 ==========================================================\
 SPRING CLOUD MICROSERVICES REMOTE CONFIG\
@@ -548,8 +607,8 @@ Removed lines transferring from product-api -> mysql.yml:
 \'97-> remove git from monolith-micro-remote-config\
 \'97-> save public key from TRT and delete, put into new account\
 \'97-> create repository in the new git: {\field{\*\fldinst{HYPERLINK "https://github.com/TRT-PaulB/monolith-micro-remote-config"}}{\fldrslt 
-\f3\b\fs36 \cf12 \cb13 \ul \ulc12 monolith-micro-remote-config}}
-\f4\fs36 \cf14 \cb13 \
+\f4\b\fs36 \cf17 \cb18 \ul \ulc17 monolith-micro-remote-config}}
+\f5\fs36 \cf19 \cb18 \
 
 \f0\fs26 \cf2 \cb3 \'97-> init remote with the contents of monolith-micro-remote-config\
 \'97-> update the username, pass and uri\
@@ -559,8 +618,7 @@ Removed lines transferring from product-api -> mysql.yml:
 ==> upload code to:\
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul \ulc5            {\field{\*\fldinst{HYPERLINK "https://github.com/PaulJames4748/pb-monolith-micro-remote-config"}}{\fldrslt https://github.com/PaulJames4748/pb-monolith-micro-remote-config}}\
-\pard\pardeftab720\sl280\partightenfactor0
+\f2\fs24 \cf5 \cb1 \ul            {\field{\*\fldinst{HYPERLINK "https://github.com/PaulJames4748/pb-monolith-micro-remote-config"}}{\fldrslt \cf5 \ulc5 https://github.com/PaulJames4748/pb-monolith-micro-remote-config}}\
 
 \f0\fs26 \cf2 \cb3 \ulnone \
     TEST THE REMOTE CONFIG SERVICE \
@@ -591,39 +649,15 @@ Removed lines transferring from product-api -> mysql.yml:
 \f2\fs24 \cf5 \cb1 \ul \ulc5 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
-\f0\fs26 \cf2 \cb3 \ulnone COURSE PLAN FROM START CHAPTER 9\
-\
-- revise up to know, including ch8 remote config service test\
-- ch9, 10\
-- 11\
-- 12,13\
-\
-- 14\
-- 15\
-- 16\
-- 17\
-\
-- 18\
-- 19\
-- 20\
-- 21\
-\
-22 - w\
-23, 24, 25\
-26\
-\
-==========================================================\
-\
-\
-\
+\f0\fs26 \cf2 \cb3 \ulnone \
 \
 \
 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
-\f2\fs24 \cf5 \cb1 \ul \
+\f2\fs24 \cf5 \cb1 \ul \ulc5 \
 \pard\pardeftab720\sl280\partightenfactor0
-\cf5 \
+\cf5 \ulc5 \
 \
 \
 \
@@ -635,4 +669,4 @@ Removed lines transferring from product-api -> mysql.yml:
 \
 \
 \pard\pardeftab720\sl280\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://github.com/rollingstoneecomm/rollingstone-ecommerce-remote-config-repository"}}{\fldrslt \cf5 \uc0\u8776 }}}
+{\field{\*\fldinst{HYPERLINK "https://github.com/rollingstoneecomm/rollingstone-ecommerce-remote-config-repository"}}{\fldrslt \cf5 \ulc5 \uc0\u8776 }}}
